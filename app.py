@@ -3,6 +3,7 @@ from flask import Flask, jsonify,request
 # from resources.admin import admin
 import face_recognition, pickle
 import numpy as np
+import pandas as pd
 from flask_cors import CORS
 
 import base64
@@ -15,12 +16,14 @@ CORS(app)
 # initialize_db(app)
 
 # app.register_blueprint(admin)
+df = pd.read_csv('./data/train-face-encodings.csv')
+df.groupby("name").mean()
 
 
 @app.route('/detect', methods=["POST"])
 # @cross_origin()
 def face_detect():
-    try:
+    # try:
         body = request.get_json()
         datauri = body['datauri']
         datauri = datauri.partition(',')[2]
@@ -39,9 +42,17 @@ def face_detect():
             encodings_array = np.array([face_encodings[0]])
             prediction = model.predict(encodings_array)
             # prediction = model.predict([face_encodings])
+            df = pd.read_csv('./data/train-face-encodings.csv')
+            avg = df.groupby("name").mean()
+            known = list(avg.loc[prediction[0]])
+            known = known[-128: ]
             print(prediction)
-            return {"user": prediction[0]}, 200
-    except Exception:
-        return "internal server error", 500
+            compare = face_recognition.compare_faces([known], face_encodings[0], tolerance=0.4)[0]
+            if compare:
+                return {"user": prediction[0]}, 200
+            return {"user": "Unknown"}
+    # except Exception:
+    #     print(Exception)
+    #     return "internal server error", 500
 
 app.run(debug=True)

@@ -19,6 +19,9 @@ CORS(app)
 df = pd.read_csv('./data/train-face-encodings.csv')
 df.groupby("name").mean()
 
+@app.route('/')
+def index():
+    return '<h1>Home</h1>'
 
 @app.route('/detect', methods=["POST"])
 # @cross_origin()

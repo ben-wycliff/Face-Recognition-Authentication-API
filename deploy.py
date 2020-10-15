@@ -1,6 +1,7 @@
 from flask import Flask, jsonify,request
 # from database.db import initialize_db
 # from resources.admin import admin
+from .utils import generate_embeddings
 from .utils import detect_face
 import face_recognition, pickle
 import numpy as np
@@ -60,7 +61,9 @@ def face_recognition():
     img.write(base64.b64decode(datauri))
     img.close()
     face = detect_face('./userface.png')
-    face_embeddings = get_emmbeddings(face)
+    face_embeddings = generate_embeddings(face)
+    # importing facenet-classifier
+    classifier = pickle.load(open('models/classifier-facenet.sav', 'rb'))
     prediction = classifier.predict(face_embeddings)
     print(prediction)
     return {"prediction": prediction}

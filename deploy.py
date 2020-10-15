@@ -1,6 +1,7 @@
 from flask import Flask, jsonify,request
 # from database.db import initialize_db
 # from resources.admin import admin
+from .utils import detect_face
 import face_recognition, pickle
 import numpy as np
 import pandas as pd
@@ -49,3 +50,17 @@ def face_detect():
             if compare:
                 return {"user": prediction[0]}, 200
             return {"user": "Unknown"}
+
+@app.route('/login', methods=["POST"])
+def face_recognition():
+    body = request.get_json()
+    datauri = body['datauri']
+    datauri = datauri.partition(',')[2]
+    img = open('userface.png', 'wb')
+    img.write(base64.b64decode(datauri))
+    img.close()
+    face = detect_face('./userface.png')
+    face_embeddings = get_emmbeddings(face)
+    prediction = classifier.predict(face_embeddings)
+    print(prediction)
+    return {"prediction": prediction}

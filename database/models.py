@@ -1,4 +1,4 @@
-from db import db
+# from db import db
 
-class Admin(db.Document):
-    email = db.StringField(required=True, unique=True)
+# class Admin(db.Document):
+    # email = db.StringField(required=True, unique=True)

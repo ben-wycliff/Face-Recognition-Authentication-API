@@ -1,7 +1,10 @@
 from numpy import expand_dims
 from keras.models import load_model
+import sys
+sys.path.append("lib/")
+from inception_resnet_v1 import *
 
-model = load_model("../models/facenet_keras.h5")
+model = load_model("models/keras/model/facenet_keras.h5")
 
 def generate_embeddings(face):
     face_pixels = face.astype('float32')
@@ -13,4 +16,4 @@ def generate_embeddings(face):
 
     # making prediction to get embedding
     embeddings_arr = model.predict(samples)
-    return embeddings_arr[0]
+    return embeddings_arr

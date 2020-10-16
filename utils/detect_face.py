@@ -1,5 +1,6 @@
 from mtcnn.mtcnn import MTCNN
 from PIL import Image
+import numpy as np
 
 def detect_face(filepath):
     print(filepath)

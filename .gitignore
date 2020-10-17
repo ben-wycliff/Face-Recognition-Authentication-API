@@ -1,5 +1,7 @@
 /venv
-/.vscode
-/.idea
-*__pycache__*
+/env
+.vscode/
+.idea/
+*_pycache_*
 testimage.png
+userface.png

@@ -24,7 +24,7 @@ mtcnn==0.1.0
 mongoengine==0.19.1
 networkx==2.4
 numpy==1.18.2
-opencv-python==4.3.0.36
+opencv-python==4.3.0.38
 pandas==1.0.3
 Pillow==7.1.1
 pymongo==3.10.1
